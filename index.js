@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let contacts = [
     { 
       "id": 1,
@@ -32,7 +34,41 @@ app.get('/info', (request, response) => {
     const firstLineContent = `Phonebook has info for ${contacts.length} people`
     const secondLineContent = new Date()
     response.send(`<p>${firstLineContent}<br/><br/>${secondLineContent}</p>`)
-  })
+})
+
+function generateId() {
+    const randomNum = Math.random() * 1000000
+    const randomInt = Math.floor(randomNum)
+
+    const finalId = randomInt
+
+    if (contacts.find(contact => contact.id === finalId)) {
+        return generateId() //calling itself recursively until a unique id is generated, a bit dangerous but should be fine
+    }
+
+    return finalId
+}
+
+app.post('/api/persons', (request, response) => {
+    const contact = request.body
+    console.log(`New contact: ${JSON.stringify(contact)}`)
+
+    if (!contact.name || !contact.number || contact.name === '' || contact.number === '') {
+        return response.status(400).json({ 
+            error: 'Name or number missing' 
+        })
+    }
+
+    const newContact = {
+        id: generateId(),
+        name: contact.name,
+        number: contact.number
+    }
+
+    contacts = contacts.concat(newContact)
+
+    response.json(newContact)
+})
 
 app.get('/api/persons', (request, response) => {
   response.json(contacts)
