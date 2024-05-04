@@ -59,6 +59,12 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
+    if (contacts.find(cntct => cntct.name === contact.name)) {
+        return response.status(400).json({ 
+            error: 'Name already exists in the phonebook' 
+        })
+    }
+
     const newContact = {
         id: generateId(),
         name: contact.name,
