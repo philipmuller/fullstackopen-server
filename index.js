@@ -2,8 +2,27 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
+const customFormatter = (tokens, req, res) => {
+    let formatterArray = [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'),
+        '-',
+        tokens['response-time'](req, res), 
+        'ms'
+    ]
+
+    if (req.method === 'POST') {
+        formatterArray.push('-')
+        formatterArray.push(JSON.stringify(req.body))
+    }
+
+    return formatterArray.join(' ')
+}
+
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan(customFormatter))
 
 let contacts = [
     { 
