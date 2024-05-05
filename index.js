@@ -21,6 +21,8 @@ const customFormatter = (tokens, req, res) => {
 
     return formatterArray.join(' ')
 }
+
+app.use(express.static('dist'))
 app.use(cors())
 app.use(express.json())
 app.use(morgan(customFormatter))
@@ -49,7 +51,7 @@ let contacts = [
 ]
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+  response.send('<h1>If this gets shown, something went wrong!</h1>')
 })
 
 app.get('/info', (request, response) => {
