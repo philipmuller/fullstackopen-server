@@ -13,6 +13,11 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
 })
 
+function phoneNumberValidator(value) {
+    const phoneNumberRegex = /^[0-9]{2,3}-[0-9]+$/;
+    return phoneNumberRegex.test(value);
+}
+
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -21,7 +26,12 @@ const personSchema = new mongoose.Schema({
     },
     number: {
         type: String,
-        required: true
+        minLength: 9,
+        required: true,
+        validate: {
+            validator: phoneNumberValidator,
+            message: props => `${props.value} doesn't follow the DD-D... or DDD-D... format.`
+        }
     },
 })
 
