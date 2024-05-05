@@ -10,7 +10,8 @@
     "build:ui": "rm -rf dist && cd ../fullstackopen/Part2/phonebook/ && npm run build && cp -r dist ../../../fullstackopen-server",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "author": "Philip Muller",
   "license": "MIT",
@@ -22,7 +23,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
     "@flydotio/dockerfile": "^0.5.7",
+    "@stylistic/eslint-plugin-js": "^1.8.0",
+    "eslint": "^9.2.0",
+    "globals": "^15.1.0",
     "nodemon": "^3.1.0"
   }
 }

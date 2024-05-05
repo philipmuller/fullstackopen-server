@@ -6,33 +6,33 @@ const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 mongoose.connect(url)
-.then(result => {
+  .then(result => {
     console.log('connected to MongoDB')
-})
-.catch(error => {
+  })
+  .catch(error => {
     console.log('error connecting to MongoDB:', error.message)
-})
+  })
 
 function phoneNumberValidator(value) {
-    const phoneNumberRegex = /^[0-9]{2,3}-[0-9]+$/;
-    return phoneNumberRegex.test(value);
+  const phoneNumberRegex = /^[0-9]{2,3}-[0-9]+$/
+  return phoneNumberRegex.test(value)
 }
 
 const personSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        minLength: 3,
-        required: true
-    },
-    number: {
-        type: String,
-        minLength: 9,
-        required: true,
-        validate: {
-            validator: phoneNumberValidator,
-            message: props => `${props.value} doesn't follow the DD-D... or DDD-D... format.`
-        }
-    },
+  name: {
+    type: String,
+    minLength: 3,
+    required: true
+  },
+  number: {
+    type: String,
+    minLength: 9,
+    required: true,
+    validate: {
+      validator: phoneNumberValidator,
+      message: props => `${props.value} doesn't follow the DD-D... or DDD-D... format.`
+    }
+  },
 })
 
 personSchema.set('toJSON', {
